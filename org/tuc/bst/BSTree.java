@@ -1,0 +1,292 @@
+package bst;
+
+import interfaces.SearchInsert;
+
+//▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+
+public class BSTree implements SearchInsert
+{
+    // NODE structure
+
+
+    Node Root;
+
+//▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+    private Node insertNode(Node root, int key)
+    {
+        // Performs normal BST insertion
+        if (root == null)
+            return new Node(key);
+
+        else if (key < root.value)
+            root.left = insertNode(root.left, key);
+
+        else
+            root.right = insertNode(root.right, key);
+
+        // Balances the tree after BST Insertion
+        return root;
+    }
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+    // findNode is used to search for a particular value given the root
+    private Node findNode(Node root, int key)
+    {
+        if (root == null || key==root.value)
+            return root;
+
+        if (key < root.value)
+            return findNode(root.left, key);
+
+        else
+            return findNode(root.right, key);
+    }
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+private Node deleteNode(Node root, int key)
+{
+    // Performs standard BST Deletion
+    if (root == null)
+        return root;
+
+    else if (key < root.value)
+        root.left = deleteNode(root.left, key);
+
+    else if (key > root.value)
+        root.right = deleteNode(root.right, key);
+
+    else
+    {
+        if (root.right == null)
+            root = root.left;
+
+        else if (root.left == null)
+            root = root.right;
+
+        else
+        {
+            Node temp = Successor(root.right);
+            root.value = temp.value;
+            root.right = deleteNode(root.right, root.value);
+        }
+    }
+    
+    return root;
+}
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+@Override
+//--------------------------------------------------------------------------------------------------
+    // Utility function for insertion of node
+    public void insert(int key)
+    {
+        if (findNode(Root , key) == null)
+        {
+            Root = insertNode(Root , key);
+            //System.out.println("Insertion successful");
+        }
+
+        else {
+            //System.out.println("\nKey with the entered value already exists in the tree");
+        }
+    }
+
+    
+//--------------------------------------------------------------------------------------------------
+
+
+
+
+
+//---------------------------------------------------
+
+public int search(int key)
+{
+    if(findNode(Root, key) == null)
+        return 0;
+    else
+        return 1;
+}
+//--------------------------------------------------------------------------------------|extension part May 21 12:05|
+public boolean searchKey(int key){
+
+    Node node_for_check = Root;
+    
+    try {
+        
+        if( Root.value == key ){utils.MultiCounter.increaseCounter(2); return true;}
+
+    } catch (NullPointerException e) { 
+    //System.out.println("chomped tree champ!"); 
+    }
+
+
+    
+    while( node_for_check != null )
+    {   
+        utils.MultiCounter.increaseCounter(2);
+
+        if( node_for_check.value > key ){utils.MultiCounter.increaseCounter(2); node_for_check = node_for_check.left; }
+
+        else if( node_for_check.value < key ){utils.MultiCounter.increaseCounter(2); node_for_check = node_for_check.right; }
+
+
+
+    try { if(node_for_check.value == key){utils.MultiCounter.increaseCounter(2); return true; } }
+    
+    catch (NullPointerException e) { 
+        //System.out.println("chomped tree champ!"); 
+    }}
+    
+return false;
+
+}
+//--------------------------------------------------------------------------------------| memory efficient code |
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------
+    // Utility function for deletion of node
+    public void delete(int key)
+    {
+        if (findNode(Root , key) != null)
+        {
+            Root = deleteNode(Root , key);
+            System.out.println("\nDeletion successful ");
+        }
+
+        else
+            System.out.println("\nNo node with entered value found in tree");
+    }
+//--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+//------------------------------------------------------------
+    public void InOrder(Node root)
+    {
+        if(root == null)
+        {
+            System.out.println("\nNo nodes in the tree");
+            return;
+        }
+
+        if(root.left != null)
+            InOrder(root.left);
+        System.out.print(root.value + " ");
+        if(root.right != null)
+            InOrder(root.right);
+
+    }
+//------------------------------------------------------------
+
+
+
+
+
+
+
+//--------------------------------------------------------
+    public void PreOrder(Node root)
+    {
+        if(root == null)
+        {
+            System.out.println("No nodes in the tree");
+            return;
+        }
+
+        System.out.print(root.value + " ");
+        if(root.left != null)
+            PreOrder(root.left);
+        if(root.right != null)
+            PreOrder(root.right);
+
+    }
+//--------------------------------------------------------
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------
+    public void PostOrder(Node key)
+    {
+        if(key == null)
+        {
+            System.out.println("No nodes in the tree");
+            return;
+        }
+
+
+        if(key.left != null)
+            PostOrder(key.left);
+        if(key.right != null)
+            PostOrder(key.right);
+        System.out.print(key.value + " ");
+
+    }
+//-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+    // Successor returns the next largest node
+    private Node Successor(Node root)
+    {
+        if (root.left != null)
+            return Successor(root.left);
+
+        else
+            return root;
+    }
+
+//--------------------------------------------------------------------------------------------------
+
+
+
+}
